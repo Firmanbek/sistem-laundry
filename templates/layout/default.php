@@ -20,6 +20,13 @@
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container">
             <a class="navbar-brand" href="<?= $this->Url->build('/') ?>">Sistem Laundry</a>
+            <?php $identity = $this->request->getAttribute('identity'); ?>
+<?php if ($identity) : ?>
+    <div class="ms-auto d-flex align-items-center text-white">
+        <span class="me-3"><?= h($identity->get('nama')) ?> (<?= h($identity->get('role')) ?>)</span>
+        <?= $this->Html->link('Keluar', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'btn btn-sm btn-light']) ?>
+    </div>
+<?php endif; ?>
         </div>
     </nav>
 

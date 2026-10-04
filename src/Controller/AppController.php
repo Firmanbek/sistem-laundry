@@ -17,23 +17,39 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
 
 /**
  * Application Controller
- *
- * Add your application-wide methods in the class below, your controllers
- * will inherit them.
  *
  * @link https://book.cakephp.org/5/en/controllers.html#the-app-controller
  */
 class AppController extends Controller
 {
     /**
+     * Peta akses per role.
+     * '*' = semua fungsi, atau daftar fungsi yang diizinkan.
+     * Tambahkan controller baru di sini setiap kali membuat fitur baru.
+     *
+     * @var array<string, array<string, string|array<string>>>
+     */
+    protected array $petaAkses = [
+        'admin' => [
+            'Pelanggan' => '*',
+            'Layanan' => '*',
+            'Transaksi' => '*',
+            'Pembayaran' => '*',
+        ],
+        'pemilik' => [
+            'Transaksi' => ['index', 'view'],
+            'Pembayaran' => ['index', 'view'],
+            'Laporan' => '*',
+            'Users' => '*',
+        ],
+    ];
+
+    /**
      * Initialization hook method.
-     *
-     * Use this method to add common initialization code like loading components.
-     *
-     * e.g. `$this->loadComponent('FormProtection');`
      *
      * @return void
      */
@@ -41,12 +57,47 @@ class AppController extends Controller
     {
         parent::initialize();
 
-        $this->loadComponent('Flash');
+        $this->loadComponent('Authentication.Authentication');
 
-        /*
-         * Enable the following component for recommended CakePHP form protection settings.
-         * see https://book.cakephp.org/5/en/controllers/components/form-protection.html
-         */
-        //$this->loadComponent('FormProtection');
+        $this->loadComponent('Flash');
+    }
+
+    /**
+     * Memeriksa hak akses berdasarkan role sebelum setiap halaman dibuka.
+     *
+     * @param \Cake\Event\EventInterface $event Event
+     * @return \Cake\Http\Response|null|void
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        // Belum login: biarkan komponen Authentication yang mengarahkan ke halaman login
+        $identity = $this->Authentication->getIdentity();
+        if ($identity === null) {
+            return;
+        }
+
+        $role = (string)$identity->get('role');
+        $controller = (string)$this->request->getParam('controller');
+        $action = (string)$this->request->getParam('action');
+
+        // Beranda, login, dan logout boleh dibuka semua role
+        if ($controller === 'Pages') {
+            return;
+        }
+        if ($controller === 'Users' && in_array($action, ['login', 'logout'], true)) {
+            return;
+        }
+
+        $diizinkan = $this->petaAkses[$role][$controller] ?? null;
+        $boleh = $diizinkan === '*'
+            || (is_array($diizinkan) && in_array($action, $diizinkan, true));
+
+        if (!$boleh) {
+            $this->Flash->error('Anda tidak punya akses ke halaman itu.');
+
+            return $this->redirect('/');
+        }
     }
 }

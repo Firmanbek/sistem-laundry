@@ -19,7 +19,7 @@ class UsersController extends AppController
     {
         parent::initialize();
 
-       // $this->Authentication->allowUnauthenticated(['login']);
+        $this->Authentication->allowUnauthenticated(['login']);
     }
 
     /**
@@ -119,17 +119,29 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
-        if ($result->isValid()) {
-            $this->Flash->success(__('Login successful'));
-            $redirect = $this->Authentication->getLoginRedirect();
-            if ($redirect) {
-                return $this->redirect($redirect);
-            }
-        }
+        if ($result && $result->isValid()) {
+    $this->Flash->success('Login berhasil.');
+    $redirect = $this->Authentication->getLoginRedirect() ?? '/';
+
+    return $this->redirect($redirect);
+}
 
         // Display error if user submitted and authentication failed
         if ($this->request->is('post')) {
             $this->Flash->error(__('Invalid username or password'));
         }
+    }
+
+        /**
+     * Logout method
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function logout()
+    {
+        $this->Authentication->logout();
+        $this->Flash->success('Anda sudah keluar.');
+
+        return $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
 }
