@@ -24,6 +24,7 @@
         <ul class="navbar-nav me-auto">
             <li class="nav-item"><?= $this->Html->link('Pelanggan', ['controller' => 'Pelanggan', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
             <li class="nav-item"><?= $this->Html->link('Layanan', ['controller' => 'Layanan', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
+            <li class="nav-item"><?= $this->Html->link('Transaksi', ['controller' => 'Transaksi', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
         </ul>
         <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'btn btn-outline-light btn-sm']) ?>
         <?php endif; ?>

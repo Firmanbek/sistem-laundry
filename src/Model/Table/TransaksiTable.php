@@ -50,12 +50,12 @@ class TransaksiTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Pelanggans', [
+        $this->belongsTo('Pelanggan', [
             'foreignKey' => 'pelanggan_id',
             'className' => 'Pelanggan',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Layanans', [
+        $this->belongsTo('Layanan', [
             'foreignKey' => 'layanan_id',
             'className' => 'Layanan',
             'joinType' => 'INNER',
@@ -141,8 +141,8 @@ class TransaksiTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['nomor_nota']), ['errorField' => 'nomor_nota']);
-        $rules->add($rules->existsIn(['pelanggan_id'], 'Pelanggans'), ['errorField' => 'pelanggan_id']);
-        $rules->add($rules->existsIn(['layanan_id'], 'Layanans'), ['errorField' => 'layanan_id']);
+        $rules->add($rules->existsIn(['pelanggan_id'], 'Pelanggan'), ['errorField' => 'pelanggan_id']);
+        $rules->add($rules->existsIn(['layanan_id'], 'Layanan'), ['errorField' => 'layanan_id']);
         $rules->add($rules->existsIn(['user_id'], 'Users'), ['errorField' => 'user_id']);
 
         return $rules;
