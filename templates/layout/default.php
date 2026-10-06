@@ -1,43 +1,71 @@
-
+<?php
+/**
+ * @var \App\View\AppView $this
+ */
+$namaAplikasi = 'Sistem Laundry';
+$identity = $this->request->getAttribute('identity');
+$nama = $identity ? (string)$identity->get('nama') : '';
+$inisial = strtoupper(mb_substr($nama !== '' ? $nama : 'U', 0, 2));
+$aktif = $this->request->getParam('controller');
+$menu = [
+    ['Transaksi', 'shopping-bag', 'Transaksi'],
+    ['Pelanggan', 'users', 'Pelanggan'],
+    ['Layanan', 'layers', 'Layanan'],
+];
+?>
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <?= $this->Html->charset() ?>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
-    </title>
+    <title><?= h($namaAplikasi) ?>: <?= h($this->fetch('title')) ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <?= $this->Html->meta('icon') ?>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <?= $this->Html->css('freshwash') ?>
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="<?= $this->Url->build('/') ?>">Sistem Laundry</a>
-        <?php if ($this->request->getAttribute('identity')): ?>
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item"><?= $this->Html->link('Pelanggan', ['controller' => 'Pelanggan', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-            <li class="nav-item"><?= $this->Html->link('Layanan', ['controller' => 'Layanan', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-            <li class="nav-item"><?= $this->Html->link('Transaksi', ['controller' => 'Transaksi', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-        </ul>
-        <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'btn btn-outline-light btn-sm']) ?>
-        <?php endif; ?>
-    </div>
-</nav>
-
-    <main class="py-4">
-        <div class="container">
+<div class="fw-app">
+    <aside class="fw-side">
+        <div>
+            <div class="fw-brand">
+                <span class="fw-logo"><i data-lucide="sparkles"></i></span>
+                <span><?= h($namaAplikasi) ?></span>
+            </div>
+            <nav class="fw-nav">
+                <?php foreach ($menu as [$label, $ikon, $controller]): ?>
+                    <a href="<?= $this->Url->build(['controller' => $controller, 'action' => 'index']) ?>" class="<?= $aktif === $controller ? 'on' : '' ?>">
+                        <i data-lucide="<?= $ikon ?>"></i><span><?= h($label) ?></span>
+                    </a>
+                <?php endforeach; ?>
+            </nav>
+        </div>
+        <div class="fw-user">
+            <div class="fw-me">
+                <span class="fw-ava"><?= h($inisial) ?></span>
+                <div><b><?= h($nama !== '' ? $nama : 'Pengguna') ?></b><small>Sistem Laundry</small></div>
+            </div>
+            <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>" class="fw-out">
+                <i data-lucide="log-out"></i><span>Keluar akun</span>
+            </a>
+        </div>
+    </aside>
+    <div class="fw-body">
+        <header class="fw-top">
+            <h1><?= h($aktif) ?></h1>
+            <a href="<?= $this->Url->build(['controller' => 'Transaksi', 'action' => 'add']) ?>" class="button">
+                <i data-lucide="plus"></i><span>Transaksi baru</span>
+            </a>
+        </header>
+        <main class="fw-main">
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
-        </div>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        </main>
+    </div>
+</div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
 </body>
 </html>
