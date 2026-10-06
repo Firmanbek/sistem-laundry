@@ -35,6 +35,7 @@
                     <th><?= $this->Paginator->sort('berat', 'Berat (kg)') ?></th>
                     <th><?= $this->Paginator->sort('total_harga', 'Total') ?></th>
                     <th><?= $this->Paginator->sort('status_laundry', 'Status') ?></th>
+                    <th>Pembayaran</th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -44,10 +45,18 @@
                     <td><?= h($transaksiEntity->nomor_nota) ?></td>
                     <td><?= $transaksiEntity->hasValue('pelanggan') ? h($transaksiEntity->pelanggan->nama) : '' ?></td>
                     <td><?= $transaksiEntity->hasValue('layanan') ? h($transaksiEntity->layanan->nama_layanan) : '' ?></td>
-                    <td><?= h($transaksiEntity->tanggal_masuk) ?></td>
+                    <td><?= $transaksiEntity->tanggal_masuk?->format('d/m/Y H:i') ?></td>
                     <td><?= $this->Number->format($transaksiEntity->berat) ?></td>
                     <td>Rp <?= number_format((float)$transaksiEntity->total_harga, 0, ',', '.') ?></td>
                     <td><?= h($transaksiEntity->status_laundry) ?></td>
+                    <td>
+                        <?php if ($transaksiEntity->kekurangan > 0): ?>
+                            <strong style="color:#b02a37;">Belum lunas</strong><br>
+                            <small>Kurang <?= $this->Number->format($transaksiEntity->kekurangan) ?></small>
+                        <?php else: ?>
+                            <span style="color:#198754;">Lunas</span>
+                        <?php endif; ?>
+                    </td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $transaksiEntity->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $transaksiEntity->id]) ?>

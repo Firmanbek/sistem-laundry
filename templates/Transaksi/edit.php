@@ -32,9 +32,7 @@
                     echo $this->Form->control('tanggal_masuk');
                     echo $this->Form->control('tanggal_selesai', ['empty' => true]);
                     echo $this->Form->control('berat');
-                    echo $this->Form->control('subtotal');
                     echo $this->Form->control('diskon');
-                    echo $this->Form->control('total_harga');
                     echo $this->Form->control('status_laundry');
                 ?>
             </fieldset>

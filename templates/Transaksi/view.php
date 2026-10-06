@@ -4,15 +4,39 @@
  * @var \App\Model\Entity\Transaksi $transaksiEntity
  */
 ?>
+
+<?php
+$totalDibayar = 0;
+foreach ($transaksiEntity->pembayaran as $p) {
+    $totalDibayar += (float)$p->jumlah_bayar;
+}
+$kekurangan = max((float)$transaksiEntity->total_harga - $totalDibayar, 0);
+if ($kekurangan <= 0) {
+    $statusBayar = 'Lunas';
+} elseif ($totalDibayar > 0) {
+    $statusBayar = 'DP';
+} else {
+    $statusBayar = 'Belum Bayar';
+}
+?>
+
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Transaksi'), ['action' => 'edit', $transaksiEntity->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Transaksi'), ['action' => 'delete', $transaksiEntity->id], ['confirm' => __('Are you sure you want to delete # {0}?', $transaksiEntity->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Transaksi'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Transaksi'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
+    <h4 class="heading"><?= __('Actions') ?></h4>
+    <?= $this->Html->link(__('Edit Transaksi'), ['action' => 'edit', $transaksiEntity->id], ['class' => 'side-nav-item']) ?>
+    <?= $this->Form->postLink(__('Delete Transaksi'), ['action' => 'delete', $transaksiEntity->id], ['confirm' => __('Are you sure you want to delete # {0}?', $transaksiEntity->id), 'class' => 'side-nav-item']) ?>
+    <?= $this->Html->link(__('List Transaksi'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+    <?= $this->Html->link(__('New Transaksi'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+    <?php if ($transaksiEntity->status_laundry !== 'Selesai'): ?>
+        <?= $this->Form->postLink(
+            __('Lanjutkan Status'),
+            ['action' => 'ubahStatus', $transaksiEntity->id],
+            ['confirm' => __('Ubah status pesanan ini?'), 'class' => 'side-nav-item']
+        ) ?>
+    <?php endif; ?>
+    <?= $this->Html->link(__('Bayar'), ['controller' => 'Pembayaran', 'action' => 'add', $transaksiEntity->id], ['class' => 'side-nav-item']) ?>
+</div>
     </aside>
     <div class="column column-80">
         <div class="transaksi view content">
@@ -59,20 +83,32 @@
                     <td><?= $this->Number->format($transaksiEntity->total_harga) ?></td>
                 </tr>
                 <tr>
+                <th><?= __('Total Dibayar') ?></th>
+                <td><?= $this->Number->format($totalDibayar) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Kekurangan') ?></th>
+                    <td><?= $this->Number->format($kekurangan) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Status Pembayaran') ?></th>
+                    <td><?= h($statusBayar) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Tanggal Masuk') ?></th>
-                    <td><?= h($transaksiEntity->tanggal_masuk) ?></td>
+                    <td><?= $transaksiEntity->tanggal_masuk?->format('d/m/Y H:i') ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Tanggal Selesai') ?></th>
-                    <td><?= h($transaksiEntity->tanggal_selesai) ?></td>
+                    <td><?= $transaksiEntity->tanggal_selesai?->format('d/m/Y H:i') ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($transaksiEntity->created) ?></td>
+                    <td><?= $transaksiEntity->created?->format('d/m/Y H:i') ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($transaksiEntity->modified) ?></td>
+                    <td><?= $transaksiEntity->modified?->format('d/m/Y H:i') ?></td>
                 </tr>
             </table>
             <div class="related">
@@ -93,12 +129,12 @@
                         <?php foreach ($transaksiEntity->pembayaran as $pembayaran) : ?>
                         <tr>
                             <td><?= h($pembayaran->id) ?></td>
-                            <td><?= h($pembayaran->tanggal_pembayaran) ?></td>
+                            <td><?= $pembayaran->tanggal_pembayaran?->format('d/m/Y H:i') ?></td>
                             <td><?= h($pembayaran->jumlah_bayar) ?></td>
                             <td><?= h($pembayaran->metode_pembayaran) ?></td>
                             <td><?= h($pembayaran->status_pembayaran) ?></td>
-                            <td><?= h($pembayaran->created) ?></td>
-                            <td><?= h($pembayaran->modified) ?></td>
+                            <td><?= $pembayaran->created?->format('d/m/Y H:i') ?></td>
+                            <td><?= $pembayaran->modified?->format('d/m/Y H:i') ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Pembayaran', 'action' => 'view', $pembayaran->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Pembayaran', 'action' => 'edit', $pembayaran->id]) ?>

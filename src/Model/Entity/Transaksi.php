@@ -33,10 +33,6 @@ class Transaksi extends Entity
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
-     * Note that when '*' is set to true, this allows all unspecified fields to
-     * be mass assigned. For security purposes, it is advised to set '*' to false
-     * (or remove it), and explicitly make individual fields accessible as needed.
-     *
      * @var array<string, bool>
      */
     protected array $_accessible = [
@@ -58,4 +54,21 @@ class Transaksi extends Entity
         'user' => true,
         'pembayaran' => true,
     ];
+
+    protected function _getTotalDibayar(): float
+    {
+        $total = 0.0;
+        if ($this->hasValue('pembayaran')) {
+            foreach ($this->pembayaran as $p) {
+                $total += (float)$p->jumlah_bayar;
+            }
+        }
+
+        return $total;
+    }
+
+    protected function _getKekurangan(): float
+    {
+        return max((float)$this->total_harga - $this->total_dibayar, 0);
+    }
 }

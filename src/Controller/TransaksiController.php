@@ -18,7 +18,7 @@ class TransaksiController extends AppController
     public function index()
 {
     $query = $this->Transaksi->find()
-        ->contain(['Pelanggan', 'Layanan'])
+        ->contain(['Pelanggan', 'Layanan', 'Pembayaran'])
         ->orderBy(['Transaksi.id' => 'DESC']);
 
     $status = $this->request->getQuery('status');
@@ -49,7 +49,38 @@ class TransaksiController extends AppController
         $transaksiEntity = $this->Transaksi->get($id, contain: ['Pelanggan', 'Layanan', 'Users', 'Pembayaran']);
         $this->set(compact('transaksiEntity'));
     }
+    public function ubahStatus($id = null)
+    {
+        $this->request->allowMethod(['post']);
+        $transaksi = $this->Transaksi->get($id);
 
+        $alur = ['Diterima', 'Dicuci/Disetrika', 'Siap Diambil', 'Selesai'];
+        $posisi = array_search($transaksi->status_laundry, $alur, true);
+
+        if ($posisi === false || $posisi >= count($alur) - 1) {
+            $this->Flash->error('Status tidak bisa diubah lagi.');
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        $transaksi->status_laundry = $alur[$posisi + 1];
+            if ($transaksi->status_laundry === 'Selesai') {
+            $transaksi->tanggal_selesai = date('Y-m-d H:i:s');
+        }       
+
+        if ($this->Transaksi->save($transaksi)) {
+            $this->Flash->success('Status diubah menjadi ' . $transaksi->status_laundry . '.');
+
+            if ($transaksi->status_laundry === 'Selesai') {
+            $cek = $this->Transaksi->get($id, contain: ['Pembayaran']);
+        if ($cek->kekurangan > 0) {
+            $this->Flash->warning('Perhatian: nota ' . $cek->nomor_nota . ' belum lunas. Kekurangan Rp ' . number_format($cek->kekurangan, 0, ',', '.') . '.');
+        }
+    }
+        } else {
+            $this->Flash->error('Status gagal diubah.');
+        }
+        return $this->redirect(['action' => 'view', $id]);
+    }
     /**
      * Add method
      *
@@ -115,20 +146,42 @@ private function buatNomorNota(): string
     {
         $transaksiEntity = $this->Transaksi->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $transaksiEntity = $this->Transaksi->patchEntity($transaksiEntity, $this->request->getData());
-            if ($this->Transaksi->save($transaksiEntity)) {
-                $this->Flash->success(__('The transaksi has been saved.'));
+            $data = $this->request->getData();
 
-                return $this->redirect(['action' => 'index']);
+            $layanan = $this->Transaksi->Layanan->get($data['layanan_id'] ?? $transaksiEntity->layanan_id);
+            $berat = (float)($data['berat'] ?? $transaksiEntity->berat);
+            $diskon = (int)($data['diskon'] ?? $transaksiEntity->diskon);
+
+            $subtotal = (int)round($berat * (float)$layanan->harga_per_kg);
+            $totalBaru = max($subtotal - $diskon, 0);
+
+            $sudahBayar = (float)$this->fetchTable('Pembayaran')->find()
+                ->where(['transaksi_id' => $transaksiEntity->id])
+                ->select(['total' => 'SUM(jumlah_bayar)'])
+                ->first()->total;
+
+            if ($berat <= 0) {
+                $this->Flash->error(__('Berat harus lebih dari 0.'));
+            } elseif ($totalBaru < $sudahBayar) {
+                $this->Flash->error(__('Total baru lebih kecil dari pembayaran yang sudah masuk ({0}).', number_format($sudahBayar, 0, ',', '.')));
+            } else {
+                $data['subtotal'] = $subtotal;
+                $data['diskon'] = $diskon;
+                $data['total_harga'] = $totalBaru;
+
+                $transaksiEntity = $this->Transaksi->patchEntity($transaksiEntity, $data);
+                if ($this->Transaksi->save($transaksiEntity)) {
+                    $this->Flash->success(__('Transaksi berhasil diperbarui.'));
+                    return $this->redirect(['action' => 'view', $transaksiEntity->id]);
+                }
+                $this->Flash->error(__('Transaksi gagal disimpan. Silakan coba lagi.'));
             }
-            $this->Flash->error(__('The transaksi could not be saved. Please, try again.'));
         }
-        $pelanggans = $this->Transaksi->Pelanggan->find('list', limit: 200)->all();
-        $layanans = $this->Transaksi->Layanan->find('list', limit: 200)->all();
-        $users = $this->Transaksi->Users->find('list', limit: 200)->all();
-        $this->set(compact('transaksiEntity', 'pelanggans', 'layanans', 'users'));
+    $pelanggans = $this->Transaksi->Pelanggan->find('list', limit: 200)->all();
+    $layanans = $this->Transaksi->Layanan->find('list', limit: 200)->all();
+    $users = $this->Transaksi->Users->find('list', limit: 200)->all();
+    $this->set(compact('transaksiEntity', 'pelanggans', 'layanans', 'users'));
     }
-
     /**
      * Delete method
      *
