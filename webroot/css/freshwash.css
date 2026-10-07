@@ -73,31 +73,62 @@ tbody tr:hover{background:#f8fafc}
 .pagination .active a{background:var(--b600);color:#fff}
 .paginator p{color:var(--mute);font-size:12px;margin:0}
 
-/* Halaman login */
-.fw-auth{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 15% 10%,var(--b100),transparent 40%),radial-gradient(circle at 85% 90%,#ccfbf1,transparent 40%),var(--bg)}
-.fw-auth-card{width:100%;max-width:880px;display:grid;grid-template-columns:1fr 1fr;border-radius:24px;overflow:hidden;background:#fff;border:1px solid #f1f5f9;box-shadow:0 25px 50px -12px rgba(15,23,42,.18)}
-.fw-auth-brand{background:var(--grad);color:#fff;padding:44px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
-.fw-auth-brand .fw-brand{height:auto;padding:0;border:0;color:#fff}
-.fw-auth-brand .fw-logo{background:rgba(255,255,255,.2);box-shadow:none}
-.fw-auth-brand h2{margin:0 0 12px;font-size:30px;line-height:1.2;font-weight:800;color:#fff}
-.fw-auth-brand p{margin:0;color:#e0f2fe}
-.fw-auth-form{padding:44px;display:flex;flex-direction:column;justify-content:center}
-.fw-auth-form h2{margin:0 0 4px;font-size:24px;font-weight:800;color:var(--ink)}
-.fw-auth-form>p{margin:0 0 24px;color:var(--mute)}
-.fw-auth-form button[type=submit]{width:100%;padding:14px;background:var(--grad)}
-
 @media(max-width:768px){
   .fw-app{flex-direction:column}.fw-side{position:static;width:100%;height:auto;flex:none}
   .fw-nav{grid-auto-flow:column;overflow-x:auto}.fw-main{padding:16px}
-  .fw-auth-card{grid-template-columns:1fr}.fw-auth-brand,.fw-auth-form{padding:28px}
 }
 
-/* Panel biru login: ilustrasi menyatu dengan panel */
-.fw-auth-brand{padding:32px;gap:24px;position:relative;overflow:hidden;background:radial-gradient(circle at 90% 8%,rgba(255,255,255,.18),transparent 38%),radial-gradient(circle at 5% 95%,rgba(45,212,191,.35),transparent 45%),var(--grad)}
-.fw-auth-brand .fw-brand{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:16px;padding:10px 16px;font-size:16px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.fw-auth-brand .fw-logo{width:32px;height:32px;border-radius:10px}
-.fw-auth-hero{display:block;width:100%;height:auto;max-height:260px;object-fit:cover;border-radius:20px;border:1px solid rgba(255,255,255,.4);box-shadow:0 18px 30px -12px rgba(3,40,80,.45)}
-.fw-auth-brand h2{font-size:26px}
-.fw-auth-note{display:flex;align-items:flex-start;gap:10px;margin:0}
-.fw-auth-note svg{flex:0 0 18px;width:18px;height:18px;margin-top:2px;color:#fff}
-@media(max-width:768px){.fw-auth-hero{max-height:150px}.fw-auth-brand{padding:24px}}
+/* Halaman login */
+.fw-auth{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 12% 8%,var(--b100),transparent 42%),radial-gradient(circle at 88% 92%,#ccfbf1,transparent 42%),var(--bg)}
+.fw-auth-card{width:100%;max-width:1040px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);border-radius:28px;overflow:hidden;background:#fff;border:1px solid #f1f5f9;box-shadow:0 30px 60px -20px rgba(15,23,42,.22)}
+
+/* Panel kiri */
+.fw-auth-brand{container-type:inline-size;position:relative;overflow:hidden;color:#fff;padding:32px;display:flex;flex-direction:column;gap:24px;background:radial-gradient(circle at 92% 6%,rgba(255,255,255,.2),transparent 40%),radial-gradient(circle at 4% 96%,rgba(45,212,191,.4),transparent 48%),var(--grad)}
+.fw-auth-brand .fw-brand{align-self:flex-start;height:auto;border:1px solid rgba(255,255,255,.3);border-radius:16px;padding:10px 16px;gap:10px;font-size:16px;color:#fff;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.fw-auth-brand .fw-logo{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.22);box-shadow:none}
+.fw-auth-hero{flex:1;min-height:220px;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.5);background:#e8f4fc;box-shadow:0 20px 34px -14px rgba(3,40,80,.5)}
+.fw-auth-hero img{display:block;width:100%;height:100%;object-fit:cover;object-position:60% 50%;transform:scale(1.5);transform-origin:70% 42%}
+.fw-auth-copy{margin-top:auto}
+.fw-auth-copy h2{margin:0 0 8px;overflow:hidden;text-overflow:clip;font-size:clamp(18px,5.4cqw,28px);line-height:1.25;font-weight:800;color:#fff;white-space:nowrap}
+.fw-auth-copy p{margin:0;max-width:44ch;color:#e0f2fe;font-size:14px;line-height:1.6}
+
+/* Panel kanan */
+.fw-auth-form{padding:40px;display:flex;align-items:center;justify-content:center}
+.fw-auth-box{width:100%;max-width:340px}
+.fw-auth-icon{width:48px;height:48px;border-radius:14px;margin-bottom:20px;display:grid;place-items:center;background:var(--b50);color:var(--b600)}
+.fw-auth-icon svg{width:24px;height:24px}
+.fw-auth-box h2{margin:0 0 6px;font-size:26px;line-height:1.2;font-weight:800;color:var(--ink)}
+.fw-auth-sub{margin:0 0 28px;color:var(--text)}
+.fw-auth-box .message{margin-bottom:20px}
+
+.fw-field{margin-bottom:18px}
+.fw-field label{margin-bottom:8px;font-size:13px}
+.fw-input{position:relative}
+.fw-input>svg{position:absolute;left:14px;top:50%;width:18px;height:18px;margin-top:-9px;color:var(--mute);pointer-events:none}
+.fw-input input:not([type=checkbox]):not([type=radio]):not([type=submit]){height:46px;padding:0 44px;background:#fff;border:1px solid #cbd5e1}
+.fw-input input::placeholder{color:var(--mute)}
+.fw-input:focus-within>svg{color:var(--b600)}
+.fw-eye{position:absolute;right:6px;top:50%;width:34px;height:34px;margin-top:-17px;padding:0;border-radius:10px;background:transparent;color:var(--mute);box-shadow:none}
+.fw-eye:hover{background:#f1f5f9;color:var(--ink)}
+.fw-eye:focus-visible{outline:2px solid var(--b500);outline-offset:1px}
+.fw-eye svg{width:18px;height:18px}
+.fw-eye .eye-off,.fw-eye[aria-pressed=true] .eye-on{display:none}
+.fw-eye[aria-pressed=true] .eye-off{display:block}
+
+.fw-submit{width:100%;height:48px;margin-top:6px;font-size:14px;background:var(--grad);box-shadow:0 10px 20px -8px rgba(2,132,199,.55)}
+.fw-submit:hover{background:var(--grad);filter:brightness(1.05)}
+.fw-submit:focus-visible{outline:3px solid rgba(14,165,233,.35);outline-offset:2px}
+
+.fw-track{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--text)}
+.fw-track a{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.fw-track svg{width:16px;height:16px}
+
+@media(max-width:768px){
+  .fw-auth{padding:16px;align-items:start}
+  .fw-auth-card{grid-template-columns:minmax(0,1fr);border-radius:24px}
+  .fw-auth-brand{padding:20px;gap:16px}
+  .fw-auth-hero{flex:none;min-height:0;height:200px}
+  .fw-auth-copy{margin-top:0}
+  .fw-auth-form{padding:28px 20px 32px}
+}
+@media(max-width:380px){.fw-track{flex-direction:column;align-items:flex-start}}

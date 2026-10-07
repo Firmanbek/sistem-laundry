@@ -19,25 +19,32 @@ $namaAplikasi = $namaOutlet ?? 'Sistem Laundry';
 <body>
 <div class="fw-auth">
     <div class="fw-auth-card">
-        <div class="fw-auth-brand">
+        <section class="fw-auth-brand">
             <div class="fw-brand">
                 <span class="fw-logo"><i data-lucide="sparkles"></i></span>
                 <span><?= h($namaAplikasi) ?></span>
             </div>
-           
 
-            <div>
+            <div class="fw-auth-hero"><?= $this->Html->image('dlogin.png', ['alt' => '']) ?></div>
+
+            <div class="fw-auth-copy">
                 <h2>Kelola usaha laundry lebih rapi</h2>
                 <p>Catat transaksi, pantau status cucian, dan cek pembayaran dalam satu tempat.</p>
             </div>
-        </div>
-        <div class="fw-auth-form">
-            <h2>Selamat datang kembali</h2>
-            <p>Masuk untuk mengelola operasional laundry.</p>
-            <?= $this->Flash->render() ?>
-            <?= $this->fetch('content') ?>
-            <p style="margin:20px 0 0;text-align:center"><?= $this->Html->link('Pelanggan? Cek status cucian Anda', ['controller' => 'Lacak', 'action' => 'index']) ?></p>
-        </div>
+        </section>
+
+        <section class="fw-auth-form">
+            <div class="fw-auth-box">
+                <h2>Selamat datang kembali</h2>
+                <p class="fw-auth-sub">Masuk untuk mengelola operasional laundry.</p>
+                <?= $this->Flash->render() ?>
+                <?= $this->fetch('content') ?>
+                <div class="fw-track">
+                    <span>Pelanggan?</span>
+                    <?= $this->Html->link('<i data-lucide="search"></i> Cek status cucian Anda', ['controller' => 'Lacak', 'action' => 'index'], ['escape' => false]) ?>
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 <script src="https://unpkg.com/lucide@latest"></script>
