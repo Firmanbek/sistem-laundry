@@ -7,7 +7,9 @@
 ?>
 <div class="transaksi index content">
     <?= $this->Html->link(__('Transaksi Baru'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Transaksi') ?></h3>
+        <h3><?= __('Transaksi') ?></h3>
+
+    <?= $this->Form->create(null, ['type' => 'get', 'class' => 'mb-3']) ?>
 
     <?= $this->Form->create(null, ['type' => 'get', 'class' => 'mb-3']) ?>
     <div class="input-group">
@@ -48,7 +50,7 @@
                     <td><?= $transaksiEntity->tanggal_masuk?->format('d/m/Y H:i') ?></td>
                     <td><?= $this->Number->format($transaksiEntity->berat) ?></td>
                     <td>Rp <?= number_format((float)$transaksiEntity->total_harga, 0, ',', '.') ?></td>
-                    <td><?= h($transaksiEntity->status_laundry) ?></td>
+                    <td><?= $this->element('status_badge', ['status' => $transaksiEntity->status_laundry]) ?></td>
                     <td>
                         <?php if ($transaksiEntity->kekurangan > 0): ?>
                             <strong style="color:#b02a37;">Belum lunas</strong><br>

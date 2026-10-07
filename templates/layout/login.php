@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  */
-$namaAplikasi = 'Sistem Laundry';
+$namaAplikasi = $namaOutlet ?? 'Sistem Laundry';
 ?>
 <!DOCTYPE html>
 <html lang="id">

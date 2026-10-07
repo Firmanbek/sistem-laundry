@@ -1,0 +1,58 @@
+/* Kotak pencarian di header */
+.fw-search{position:relative;width:min(320px,100%)}
+.fw-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--mute)}
+.fw-search input{padding:9px 14px 9px 38px;background:#f1f5f9;border-color:transparent;font-size:12px}
+
+/* Dashboard */
+.dash{display:grid;gap:24px}
+.dash-hero{background:linear-gradient(90deg,#0284c7 30%,#14b8a6);border-radius:24px;padding:24px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;box-shadow:0 20px 25px -5px rgba(2,132,199,.25)}
+.dash-hero .tgl{display:inline-block;padding:4px 12px;background:rgba(255,255,255,.2);border-radius:999px;font-size:12px;font-weight:600}
+.dash-hero h2{margin:8px 0 4px;font-size:24px;font-weight:700;color:#fff}
+.dash-hero p{margin:0;color:#e0f2fe}.dash-hero strong{color:#fff}
+.btn-putih{background:#fff;color:var(--b700);box-shadow:0 4px 10px rgba(0,0,0,.1)}
+.btn-putih:hover{background:var(--b50);color:var(--b700)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(15,23,42,.05)}
+.stat-top{display:flex;justify-content:space-between;align-items:center}
+.stat-top>span{font-size:12px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}
+.stat-ico{padding:10px;border-radius:12px;display:grid;place-items:center}.stat-ico svg{width:20px;height:20px}
+.stat-ico.sky{background:#f0f9ff;color:#0284c7}.stat-ico.amber{background:#fffbeb;color:#d97706}
+.stat-ico.teal{background:#f0fdfa;color:#0d9488}.stat-ico.emerald{background:#ecfdf5;color:#059669}
+.stat-val{margin-top:16px}.stat-val b{font-size:24px;font-weight:800;color:#1e293b}
+.stat-val small{margin-left:8px;font-size:12px;font-weight:600}
+.t-green{color:#059669}.t-amber{color:#d97706}.t-teal{color:#0d9488}
+
+/* Panel tabel */
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.05)}
+.panel-head{padding:20px;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.panel-head h3{margin:0;font-size:16px}.panel-head p{margin:0;font-size:12px;color:var(--mute)}
+.panel thead th{padding:14px 20px}.panel td{padding:16px 20px}
+.btn-ghost{padding:6px 12px;border-radius:8px;background:#f1f5f9;color:var(--text);font-size:12px;font-weight:600}
+.btn-ghost:hover{background:var(--line);color:var(--ink)}
+.nota{font-weight:700;color:var(--b600)}.nama{font-weight:600;color:#1e293b}
+.sub{display:block;font-size:11px;color:var(--mute)}
+.icon-btn{display:inline-flex;padding:6px;border-radius:8px;color:var(--mute)}
+.icon-btn:hover{background:var(--b50);color:var(--b600)}.icon-btn svg{width:16px;height:16px}
+
+/* Badge status */
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid;font-size:11px;font-weight:600}
+.badge i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge.amber{background:#fffbeb;color:#b45309;border-color:#fde68a}
+.badge.sky{background:#f0f9ff;color:#0369a1;border-color:#bae6fd}
+.badge.teal{background:#f0fdfa;color:#0f766e;border-color:#99f6e4}
+.badge.emerald{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+
+/* Laporan keuangan */
+.lap-filter{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;padding:20px}
+.lap-filter .input{margin:0}
+.lap-quick{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.lap-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:20px;align-items:start}
+@media(max-width:900px){.lap-grid{grid-template-columns:1fr}}
+.angka{text-align:right;font-weight:600;color:#1e293b;white-space:nowrap}
+.angka.kurang{color:#d97706}.angka.lunas{color:#059669}
+
+/* Kartu statistik yang bisa diklik dan info filter */
+.stat-link{display:block;color:inherit;transition:transform .15s,box-shadow .15s,border-color .15s}
+.stat-link:hover{color:inherit;transform:translateY(-2px);border-color:#bae6fd;box-shadow:0 8px 20px -6px rgba(2,132,199,.25)}
+.filter-info{display:inline-block;margin:0 0 14px;padding:8px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;color:#b45309;font-weight:600}
+.filter-info a{margin-left:10px}

@@ -21,9 +21,27 @@ class TransaksiController extends AppController
         ->contain(['Pelanggan', 'Layanan', 'Pembayaran'])
         ->orderBy(['Transaksi.id' => 'DESC']);
 
-    $status = $this->request->getQuery('status');
+        $status = $this->request->getQuery('status');
     if ($status) {
         $query->where(['Transaksi.status_laundry' => $status]);
+    }
+
+    $filter = (string)$this->request->getQuery('filter');
+    if ($filter === 'proses') {
+        $query->where(['Transaksi.status_laundry IN' => ['Diterima', 'Dicuci/Disetrika']]);
+    } elseif ($filter === 'belum-lunas') {
+        $query->where(function ($exp) {
+            return $exp->add('Transaksi.total_harga > COALESCE((SELECT SUM(p.jumlah_bayar) FROM pembayaran p WHERE p.transaksi_id = Transaksi.id), 0)');
+        });
+    }
+
+    $q = trim((string)$this->request->getQuery('q'));
+    if ($q !== '') {
+        $query->where(['OR' => [
+            'Transaksi.nomor_nota LIKE' => '%' . $q . '%',
+            'Pelanggan.nama LIKE' => '%' . $q . '%',
+            'Pelanggan.no_hp LIKE' => '%' . $q . '%',
+        ]]);
     }
 
     $daftarStatus = $this->Transaksi->find()

@@ -44,6 +44,7 @@ class AppController extends Controller
             'Transaksi' => ['index', 'view'],
             'Pembayaran' => ['index', 'view'],
             'Laporan' => '*',
+            'Pengaturan' => '*',
             'Users' => '*',
         ],
     ];
@@ -83,7 +84,7 @@ class AppController extends Controller
         $action = (string)$this->request->getParam('action');
 
         // Beranda, login, dan logout boleh dibuka semua role
-        if ($controller === 'Pages') {
+        if (in_array($controller, ['Pages', 'Dashboard'], true)) {
             return;
         }
         if ($controller === 'Users' && in_array($action, ['login', 'logout'], true)) {
@@ -100,4 +101,17 @@ class AppController extends Controller
             return $this->redirect('/');
         }
     }
+
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+
+        try {
+            $outlet = $this->fetchTable('Pengaturan')->find()->first();
+            $this->set('namaOutlet', $outlet?->nama_outlet ?: 'Sistem Laundry');
+        } catch (\Throwable $e) {
+            $this->set('namaOutlet', 'Sistem Laundry');
+        }
+    }
+
 }
