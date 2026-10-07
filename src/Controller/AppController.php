@@ -83,8 +83,8 @@ class AppController extends Controller
         $controller = (string)$this->request->getParam('controller');
         $action = (string)$this->request->getParam('action');
 
-        // Beranda, login, dan logout boleh dibuka semua role
-        if (in_array($controller, ['Pages', 'Dashboard'], true)) {
+        // Beranda, halaman lacak nota, login, dan logout boleh dibuka semua role
+        if (in_array($controller, ['Pages', 'Dashboard', 'Lacak'], true)) {
             return;
         }
         if ($controller === 'Users' && in_array($action, ['login', 'logout'], true)) {

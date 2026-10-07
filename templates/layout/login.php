@@ -24,6 +24,8 @@ $namaAplikasi = $namaOutlet ?? 'Sistem Laundry';
                 <span class="fw-logo"><i data-lucide="sparkles"></i></span>
                 <span><?= h($namaAplikasi) ?></span>
             </div>
+           
+
             <div>
                 <h2>Kelola usaha laundry lebih rapi</h2>
                 <p>Catat transaksi, pantau status cucian, dan cek pembayaran dalam satu tempat.</p>
@@ -34,6 +36,7 @@ $namaAplikasi = $namaOutlet ?? 'Sistem Laundry';
             <p>Masuk untuk mengelola operasional laundry.</p>
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
+            <p style="margin:20px 0 0;text-align:center"><?= $this->Html->link('Pelanggan? Cek status cucian Anda', ['controller' => 'Lacak', 'action' => 'index']) ?></p>
         </div>
     </div>
 </div>

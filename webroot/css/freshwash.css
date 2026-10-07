@@ -91,3 +91,13 @@ tbody tr:hover{background:#f8fafc}
   .fw-nav{grid-auto-flow:column;overflow-x:auto}.fw-main{padding:16px}
   .fw-auth-card{grid-template-columns:1fr}.fw-auth-brand,.fw-auth-form{padding:28px}
 }
+
+/* Panel biru login: ilustrasi menyatu dengan panel */
+.fw-auth-brand{padding:32px;gap:24px;position:relative;overflow:hidden;background:radial-gradient(circle at 90% 8%,rgba(255,255,255,.18),transparent 38%),radial-gradient(circle at 5% 95%,rgba(45,212,191,.35),transparent 45%),var(--grad)}
+.fw-auth-brand .fw-brand{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:16px;padding:10px 16px;font-size:16px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.fw-auth-brand .fw-logo{width:32px;height:32px;border-radius:10px}
+.fw-auth-hero{display:block;width:100%;height:auto;max-height:260px;object-fit:cover;border-radius:20px;border:1px solid rgba(255,255,255,.4);box-shadow:0 18px 30px -12px rgba(3,40,80,.45)}
+.fw-auth-brand h2{font-size:26px}
+.fw-auth-note{display:flex;align-items:flex-start;gap:10px;margin:0}
+.fw-auth-note svg{flex:0 0 18px;width:18px;height:18px;margin-top:2px;color:#fff}
+@media(max-width:768px){.fw-auth-hero{max-height:150px}.fw-auth-brand{padding:24px}}

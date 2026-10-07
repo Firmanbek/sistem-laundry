@@ -60,6 +60,9 @@ return function (RouteBuilder $routes): void {
         /*
          * ...and connect the rest of 'Pages' controller's URLs.
          */
+        // Halaman publik: pelanggan mengecek status nota tanpa login
+        $builder->connect('/lacak', ['controller' => 'Lacak', 'action' => 'index']);
+
         $builder->connect('/pages/*', 'Pages::display');
 
         /*

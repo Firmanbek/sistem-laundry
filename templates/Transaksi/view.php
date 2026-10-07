@@ -28,12 +28,48 @@ if ($kekurangan <= 0) {
     <?= $this->Form->postLink(__('Delete Transaksi'), ['action' => 'delete', $transaksiEntity->id], ['confirm' => __('Are you sure you want to delete # {0}?', $transaksiEntity->id), 'class' => 'side-nav-item']) ?>
     <?= $this->Html->link(__('List Transaksi'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
     <?= $this->Html->link(__('New Transaksi'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-    <?php if ($transaksiEntity->status_laundry !== 'Selesai'): ?>
+    <?php
+    $alurStatus = ['Diterima', 'Dicuci/Disetrika', 'Siap Diambil', 'Selesai'];
+    $posisiStatus = array_search($transaksiEntity->status_laundry, $alurStatus, true);
+    $statusBerikut = $posisiStatus === false ? null : ($alurStatus[$posisiStatus + 1] ?? null);
+
+    // Tautan WhatsApp ke pelanggan (hanya jika nomornya valid)
+    $pelangganWa = $transaksiEntity->hasValue('pelanggan') ? $transaksiEntity->pelanggan : null;
+    $nomorWa = $pelangganWa?->nomor_wa;
+    $urlWa = null;
+    if ($nomorWa !== null) {
+        $pesanWa = 'Halo ' . $pelangganWa->nama . ', pesanan laundry Anda dengan nomor nota '
+            . $transaksiEntity->nomor_nota . ' sudah selesai dan siap diambil di ' . ($namaOutlet ?? 'outlet kami') . '.';
+        if ($kekurangan > 0) {
+            $pesanWa .= ' Sisa pembayaran: Rp ' . number_format($kekurangan, 0, ',', '.') . '.';
+        }
+        $pesanWa .= ' Terima kasih.';
+        $urlWa = 'https://wa.me/' . $nomorWa . '?text=' . rawurlencode($pesanWa);
+    }
+    $bukaWa = $statusBerikut === 'Siap Diambil' && $urlWa !== null;
+    ?>
+    <?php if ($statusBerikut !== null): ?>
+        <?php
+        $opsiStatus = [
+            'confirm' => __('Status {0} akan berubah dari "{1}" menjadi "{2}".', $transaksiEntity->nomor_nota, $transaksiEntity->status_laundry, $statusBerikut)
+                . ($bukaWa ? ' ' . __('WhatsApp ke {0} akan dibuka otomatis.', $pelangganWa->nama) : ''),
+            'data-confirm-title' => __('Ubah status pesanan?'),
+            'data-confirm-ok' => __('Ya, ubah status'),
+            'data-confirm-type' => 'info',
+            'class' => 'side-nav-item',
+        ];
+        if ($bukaWa) {
+            $opsiStatus['data-open-url'] = $urlWa;
+        }
+        ?>
         <?= $this->Form->postLink(
             __('Lanjutkan Status'),
             ['action' => 'ubahStatus', $transaksiEntity->id],
-            ['confirm' => __('Ubah status pesanan ini?'), 'class' => 'side-nav-item']
+            $opsiStatus
         ) ?>
+    <?php endif; ?>
+    <?php if ($transaksiEntity->status_laundry === 'Siap Diambil' && $urlWa !== null): ?>
+        <?= $this->Html->link(__('Kirim WhatsApp'), $urlWa, ['class' => 'side-nav-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
     <?php endif; ?>
     <?= $this->Html->link(__('Bayar'), ['controller' => 'Pembayaran', 'action' => 'add', $transaksiEntity->id], ['class' => 'side-nav-item']) ?>
 </div>

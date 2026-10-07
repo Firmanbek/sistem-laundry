@@ -77,5 +77,6 @@ $menu = array_filter($menu, fn ($m) => in_array($role, $m[3], true));
 </div>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>lucide.createIcons();</script>
+<?= $this->Html->script('confirm-modal') ?>
 </body>
 </html>
