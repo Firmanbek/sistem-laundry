@@ -3,9 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Transaksi $transaksiEntity
  */
-?>
-
-<?php
 $totalDibayar = 0;
 foreach ($transaksiEntity->pembayaran as $p) {
     $totalDibayar += (float)$p->jumlah_bayar;
@@ -28,6 +25,7 @@ if ($kekurangan <= 0) {
     <?= $this->Form->postLink(__('Delete Transaksi'), ['action' => 'delete', $transaksiEntity->id], ['confirm' => __('Are you sure you want to delete # {0}?', $transaksiEntity->id), 'class' => 'side-nav-item']) ?>
     <?= $this->Html->link(__('List Transaksi'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
     <?= $this->Html->link(__('New Transaksi'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+    <?= $this->Html->link(__('Cetak Nota'), ['action' => 'nota', $transaksiEntity->id], ['class' => 'side-nav-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
     <?php
     $alurStatus = ['Diterima', 'Dicuci/Disetrika', 'Siap Diambil', 'Selesai'];
     $posisiStatus = array_search($transaksiEntity->status_laundry, $alurStatus, true);
@@ -99,10 +97,6 @@ if ($kekurangan <= 0) {
                     <td><?= h($transaksiEntity->status_laundry) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($transaksiEntity->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Berat') ?></th>
                     <td><?= $this->Number->format($transaksiEntity->berat) ?></td>
                 </tr>
@@ -119,8 +113,8 @@ if ($kekurangan <= 0) {
                     <td><?= $this->Number->format($transaksiEntity->total_harga) ?></td>
                 </tr>
                 <tr>
-                <th><?= __('Total Dibayar') ?></th>
-                <td><?= $this->Number->format($totalDibayar) ?></td>
+                    <th><?= __('Total Dibayar') ?></th>
+                    <td><?= $this->Number->format($totalDibayar) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Kekurangan') ?></th>
@@ -138,14 +132,6 @@ if ($kekurangan <= 0) {
                     <th><?= __('Tanggal Selesai') ?></th>
                     <td><?= $transaksiEntity->tanggal_selesai?->format('d/m/Y H:i') ?></td>
                 </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= $transaksiEntity->created?->format('d/m/Y H:i') ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= $transaksiEntity->modified?->format('d/m/Y H:i') ?></td>
-                </tr>
             </table>
             <div class="related">
                 <h4><?= __('Related Pembayaran') ?></h4>
@@ -158,8 +144,7 @@ if ($kekurangan <= 0) {
                             <th><?= __('Jumlah Bayar') ?></th>
                             <th><?= __('Metode Pembayaran') ?></th>
                             <th><?= __('Status Pembayaran') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Modified') ?></th>
+                            <th><?= __('Bukti') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($transaksiEntity->pembayaran as $pembayaran) : ?>
@@ -169,8 +154,15 @@ if ($kekurangan <= 0) {
                             <td><?= h($pembayaran->jumlah_bayar) ?></td>
                             <td><?= h($pembayaran->metode_pembayaran) ?></td>
                             <td><?= h($pembayaran->status_pembayaran) ?></td>
-                            <td><?= $pembayaran->created?->format('d/m/Y H:i') ?></td>
-                            <td><?= $pembayaran->modified?->format('d/m/Y H:i') ?></td>
+                            <td>
+                                <?php if ($pembayaran->bukti_transfer): ?>
+                                    <?= $this->Html->link(__('Lihat bukti'), ['controller' => 'Pembayaran', 'action' => 'bukti', $pembayaran->id], ['target' => '_blank', 'rel' => 'noopener']) ?>
+                                <?php elseif (in_array(strtolower((string)$pembayaran->metode_pembayaran), ['qris', 'transfer'], true)): ?>
+                                    <span style="color:#b91c1c">Belum ada</span>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Pembayaran', 'action' => 'view', $pembayaran->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Pembayaran', 'action' => 'edit', $pembayaran->id]) ?>

@@ -39,10 +39,11 @@ class AppController extends Controller
             'Layanan' => '*',
             'Transaksi' => '*',
             'Pembayaran' => '*',
+            'Bukti' => '*',
         ],
         'pemilik' => [
             'Transaksi' => ['index', 'view'],
-            'Pembayaran' => ['index', 'view'],
+            'Pembayaran' => ['index', 'view', 'bukti'],
             'Laporan' => '*',
             'Pengaturan' => '*',
             'Users' => '*',

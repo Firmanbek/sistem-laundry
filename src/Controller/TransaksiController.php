@@ -99,6 +99,18 @@ class TransaksiController extends AppController
         }
         return $this->redirect(['action' => 'view', $id]);
     }
+public function nota($id = null)
+{
+    $transaksiEntity = $this->Transaksi->get($id, contain: [
+        'Pelanggan', 'Layanan', 'Users', 'Pembayaran',
+    ]);
+    $pengaturan = $this->fetchTable('Pengaturan')->find()->first();
+    $teksNota = $pengaturan->catatan_nota ?? null;
+
+    $this->viewBuilder()->disableAutoLayout();
+    $this->set(compact('transaksiEntity', 'teksNota'));
+}
+
     /**
      * Add method
      *

@@ -19,7 +19,12 @@
             <?= $this->Form->control('nama_outlet', ['label' => 'Nama outlet']) ?>
             <?= $this->Form->control('alamat', ['label' => 'Alamat', 'type' => 'textarea', 'rows' => 3]) ?>
             <?= $this->Form->control('no_telepon', ['label' => 'No. telepon']) ?>
-            <?= $this->Form->control('catatan_nota', ['label' => 'Catatan di nota', 'type' => 'textarea', 'rows' => 2]) ?>
+            <?= $this->Form->control('catatan_nota', [
+    'label' => 'Teks penutup nota',
+    'type' => 'textarea',
+    'rows' => 3,
+]) ?>
+<small style="display:block;margin:-8px 0 14px;color:#64748b">Gunakan {outlet} untuk menampilkan nama outlet. Tekan Enter untuk baris baru.</small>
             <?= $this->Form->button('Simpan pengaturan') ?>
             <?= $this->Form->end() ?>
         </div>
